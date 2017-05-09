@@ -14,18 +14,25 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "debian" do |debian|
     debian.vm.box = "debian/contrib-jessie64"
+    debian.vm.provision "ansible" do |ansible|
+      ansible.playbook = "tests/test.yml"
+    end
   end
 
   config.vm.define "ubuntu" do |ubuntu|
     ubuntu.vm.box = "ubuntu/xenial64"
+    ubuntu.vm.provision "shell",
+      inline: "apt-get update && apt-get install -y python"
+    ubuntu.vm.provision "ansible" do |ansible|
+      ansible.playbook = "tests/test.yml"
+    end
   end
 
   config.vm.define "centos" do |centos|
     centos.vm.box = "centos/7"
-  end
-
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "tests/test.yml"
+    centos.vm.provision "ansible" do |ansible|
+      ansible.playbook = "tests/test.yml"
+    end
   end
 
   config.vm.provision "shell", path: "tests/test.sh"
