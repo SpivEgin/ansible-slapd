@@ -2,13 +2,13 @@
 - hosts: all
   remote_user: root
   package:
-    name: {{ item }}
-    state: {{ present }}
+    name: "{{ item }}"
+    state: present
   become: true
   with_items:
     - lsof
     - openssl
-    
+
 - hosts: all
   remote_user: root
   roles:
