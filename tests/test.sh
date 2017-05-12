@@ -4,7 +4,7 @@ if ! [ -f /etc/debian_version ] && ! which netstat >> /dev/null; then
   yum -y install net-tools
 fi
 
-if netstat -tulpen | grep 363 ; then
+if netstat -tulpen | grep 389 ; then
   echo "LDAP Protocol available"
 else
   echo "LDAP Protocol not available"

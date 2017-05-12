@@ -1,0 +1,36 @@
+---
+  - name: Install slapd Server
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items: "{{ slapd_server_pkgs }}"
+    become: true
+
+  - name: Install LDAP Utils
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items: "{{ slapd_utils_pkgs }}"
+    become: true
+
+  - name: Start ldap deamon
+    service:
+      name: slapd
+      state: started
+    become: true
+
+  - name: Hash ldap root pw
+    shell: /usr/sbin/slappasswd -h {"{{ slapd_hashing_algo }}"} -s {{ slapd_root_pw }}
+    register: slapd_root_pw_hash
+
+  - name: Set ldap root pw at config tree (Create File)
+    template:
+      src: files/root_pw_reset.ldif.y2
+      dest: "{{ slapd_tmp_dir}}/root_pw_reset.ldif"
+      owner: root
+      group: root
+    become: true
+
+  - name: Set ldap root pw at config tree (Command)
+    shell: ldapmodify -Y EXTERNAL -H ldapi:/// -f "{{ slapd_tmp_dir}}"/root_pw_reset.ldif
+    become: true
