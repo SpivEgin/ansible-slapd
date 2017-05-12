@@ -1,22 +1,28 @@
 ---
-dist: trusty
-language: python
-python: "2.7"
+# Source: https://github.com/geerlingguy/ansible-role-mysql/blob/master/.travis.yml
 
-before_install:
-  # Make sure everything's up to date.
-  - sudo apt-get update -qq
-  - sudo apt-get install lsof -qq
+services: docker
 
-install:
-  # Install Ansible.
-  - pip install ansible
-
-  # Add ansible.cfg to pick up roles path.
-  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+env:
+  - distro: centos7
+    playbook: centos-7-test.yml
+  - distro: debian8
+    playbook: test.yml
+  - distro: ubuntu1604
+    playbook: test.yml
 
 script:
-  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
-  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
-  - lsof | grep 389
-  - lsof | grep 636
+  # Configure test script so we can run extra tests after playbook is run.
+  - export container_id=$(date +%s)
+  - export cleanup=false
+
+  # Download test shim.
+  - wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/Phill93/9893096e9a26cedc3b6db5d4f7df5e7c/raw/
+  - chmod +x ${PWD}/tests/test.sh
+
+  # Run tests.
+  - ${PWD}/tests/test.sh
+
+  - sudo docker exec ${container_id} lsof -i4TCP:ldap && (echo 'LDAP Socket open') && exit 0 || (echo 'LDAP Socket closed') && exit 1
+  - sudo docker exec ${container_id} lsof -i4TCP:ldaps && (echo 'Secure LDAP Socket open') && exit 0 || (echo 'Secure LDAP Socket closed') && exit 1
+  - sudo docker exec ${container_id} lsof /var/run/slapd/ldapi && (echo 'LDAP IPC open') && exit 0 || (echo 'LDAP IPC closed') && exit 1
