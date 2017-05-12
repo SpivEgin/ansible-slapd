@@ -38,6 +38,11 @@
         group: root
       become: true
 
+    - name: Ensure ldap server is running
+      service:
+        name: slapd
+        state: started
+
     - name: Execute ldif file
       shell: ldapmodify -Y EXTERNAL -H ldapi:/// -f "{{ slapd_tmp_dir}}"/ssl_enable.ldif
       become: true
@@ -51,6 +56,11 @@
         owner: root
         group: root
       become: true
+
+    - name: Ensure ldap server is running
+      service:
+        name: slapd
+        state: started
 
     - name: Execute ldif file
       shell: ldapmodify -Y EXTERNAL -H ldapi:/// < "{{ slapd_tmp_dir}}"/ssl_enable.ldif
