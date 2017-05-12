@@ -42,6 +42,7 @@
       service:
         name: slapd
         state: started
+      become: true
 
     - name: Execute ldif file
       shell: ldapmodify -Y EXTERNAL -H ldapi:/// -f "{{ slapd_tmp_dir}}"/ssl_enable.ldif
@@ -61,6 +62,7 @@
       service:
         name: slapd
         state: started
+      become: true
 
     - name: Execute ldif file
       shell: ldapmodify -Y EXTERNAL -H ldapi:/// < "{{ slapd_tmp_dir}}"/ssl_enable.ldif
