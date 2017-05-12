@@ -1,4 +1,4 @@
-[![Ansible Role](https://img.shields.io/ansible/role/17826.svg)](https://galaxy.ansible.com/Phill93/slapd/)
+[![Ansible Role](https://img.shields.io/ansible/role/17826.svg)](https://galaxy.ansible.com/Phill93/slapd/)[![Build Status](https://travis-ci.org/Phill93/ansible-slapd.svg?branch=master)](https://travis-ci.org/Phill93/ansible-slapd)
 
 Role Name
 =========
