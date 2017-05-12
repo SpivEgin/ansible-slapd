@@ -10,13 +10,13 @@ Vagrant.configure("2") do |config|
   ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/.."
   ENV['ANSIBLE_NOCOWS'] = "1"
 
-  config.vm.synced_folder "tests/", "/tests/"
-
   config.vm.define "debian" do |debian|
     debian.vm.box = "debian/contrib-jessie64"
     debian.vm.provision "ansible" do |ansible|
       ansible.playbook = "tests/test.yml"
     end
+    debian.vm.network "forwarded_port", guest: 389, host: 8389, protocol: "tcp"
+    debian.vm.network "forwarded_port", guest: 636, host: 8636, protocol: "tcp"
   end
 
   config.vm.define "ubuntu" do |ubuntu|
@@ -34,6 +34,4 @@ Vagrant.configure("2") do |config|
       ansible.playbook = "tests/test.yml"
     end
   end
-
-  config.vm.provision "shell", path: "tests/test.sh"
 end
