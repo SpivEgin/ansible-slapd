@@ -1,4 +1,4 @@
-[![Ansible Role](https://img.shields.io/ansible/role/3078.svg)](https://galaxy.ansible.com/phill93/slapd/)
+[![Ansible Role](https://img.shields.io/ansible/role/3078.svg)](https://galaxy.ansible.com/Phill93/slapd/)
 
 Role Name
 =========
