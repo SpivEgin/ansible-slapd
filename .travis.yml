@@ -6,10 +6,13 @@ services: docker
 env:
   - distro: centos7
     playbook: test.yml
+    ldapi: /var/run/ldapi
   - distro: debian8
     playbook: test.yml
+    ldapi: /var/run/slapd/ldapi
   - distro: ubuntu1604
     playbook: test.yml
+    ldapi: /var/run/slapd/ldapi
 
 script:
   # Configure test script so we can run extra tests after playbook is run.
@@ -25,4 +28,4 @@ script:
 
   - sudo docker exec ${container_id} lsof -i4TCP:ldap >> /dev/null && (echo 'LDAP Socket open' && exit 0) || (echo 'LDAP Socket closed' && exit 1)
   - sudo docker exec ${container_id} lsof -i4TCP:ldaps >> /dev/null && (echo 'Secure LDAP Socket open' && exit 0) || (echo 'Secure LDAP Socket closed' && exit 1)
-  - sudo docker exec ${container_id} lsof /var/run/slapd/ldapi &>/dev/null && (echo 'LDAP IPC open' && exit 0) || (echo 'LDAP IPC closed' && exit 1)
+  - sudo docker exec ${container_id} lsof ${ldapi} &>/dev/null && (echo 'LDAP IPC open' && exit 0) || (echo 'LDAP IPC closed' && exit 1)
