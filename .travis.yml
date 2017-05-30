@@ -19,10 +19,10 @@ script:
   # Download test shim.
   - wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/Phill93/9893096e9a26cedc3b6db5d4f7df5e7c/raw/
   - chmod +x ${PWD}/tests/test.sh
-  
+
   # Run tests.
   - ${PWD}/tests/test.sh
 
-  - sudo docker exec ${container_id} lsof -i4TCP:ldap && (echo 'LDAP Socket open') && exit 0 || (echo 'LDAP Socket closed') && exit 1
-  - sudo docker exec ${container_id} lsof -i4TCP:ldaps && (echo 'Secure LDAP Socket open') && exit 0 || (echo 'Secure LDAP Socket closed') && exit 1
-  - sudo docker exec ${container_id} lsof /var/run/slapd/ldapi && (echo 'LDAP IPC open') && exit 0 || (echo 'LDAP IPC closed') && exit 1
+  - sudo docker exec ${container_id} lsof -i4TCP:ldap >> /dev/null && (echo 'LDAP Socket open') && exit 0 || (echo 'LDAP Socket closed') && exit 1
+  - sudo docker exec ${container_id} lsof -i4TCP:ldaps >> /dev/null && (echo 'Secure LDAP Socket open') && exit 0 || (echo 'Secure LDAP Socket closed') && exit 1
+  - sudo docker exec ${container_id} lsof /var/run/slapd/ldapi && (echo 'LDAP IPC open') >> /dev/null && exit 0 || (echo 'LDAP IPC closed') && exit 1
