@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "debian" do |debian|
     debian.vm.box = "debian/contrib-jessie64"
     debian.vm.provision "ansible" do |ansible|
-      ansible.playbook = "tests/test.yml"
+      ansible.playbook = "tests/test_vagrant.yml"
     end
     debian.vm.network "forwarded_port", guest: 389, host: 8389, protocol: "tcp"
     debian.vm.network "forwarded_port", guest: 636, host: 8636, protocol: "tcp"
@@ -24,14 +24,14 @@ Vagrant.configure("2") do |config|
     ubuntu.vm.provision "shell",
       inline: "apt-get update && apt-get install -y python"
     ubuntu.vm.provision "ansible" do |ansible|
-      ansible.playbook = "tests/test.yml"
+      ansible.playbook = "tests/test_vagrant.yml"
     end
   end
 
   config.vm.define "centos" do |centos|
     centos.vm.box = "centos/7"
     centos.vm.provision "ansible" do |ansible|
-      ansible.playbook = "tests/test.yml"
+      ansible.playbook = "tests/test_vagrant.yml"
     end
   end
 end
