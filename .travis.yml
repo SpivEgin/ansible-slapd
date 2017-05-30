@@ -23,6 +23,6 @@ script:
   # Run tests.
   - ${PWD}/tests/test.sh
 
-  - sudo docker exec ${container_id} lsof -i4TCP:ldap >> /dev/null && (echo 'LDAP Socket open') && exit 0 || (echo 'LDAP Socket closed') && exit 1
-  - sudo docker exec ${container_id} lsof -i4TCP:ldaps >> /dev/null && (echo 'Secure LDAP Socket open') && exit 0 || (echo 'Secure LDAP Socket closed') && exit 1
-  - sudo docker exec ${container_id} lsof /var/run/slapd/ldapi && (echo 'LDAP IPC open') >> /dev/null && exit 0 || (echo 'LDAP IPC closed') && exit 1
+  - sudo docker exec ${container_id} lsof -i4TCP:ldap >> /dev/null && (echo 'LDAP Socket open' && exit 0) || (echo 'LDAP Socket closed' && exit 1)
+  - sudo docker exec ${container_id} lsof -i4TCP:ldaps >> /dev/null && (echo 'Secure LDAP Socket open' && exit 0) || (echo 'Secure LDAP Socket closed' && exit 1)
+  - sudo docker exec ${container_id} lsof /var/run/slapd/ldapi >> /dev/null && (echo 'LDAP IPC open' && exit 0) || (echo 'LDAP IPC closed' && exit 1)
