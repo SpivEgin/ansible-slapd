@@ -24,3 +24,31 @@ slapd_ssl_cert_state: Some-State
 slapd_ssl_cert_location: Some-Locality
 slapd_ssl_cert_organization: Internet Widgits Pty Ltd
 slapd_ssl_cert_common_name: "{{ ansible_hostname }}"
+
+#Database section
+slapd_databases:
+  - dc=example,dc=net:
+      admin_user: cn=admin,dc=example,dc=net
+      admin_password: test
+      ou:
+        - groups
+        - users
+      ac:
+        - to: *
+          by: cn=admin,dc=example,dc=net
+          type: write
+        - to: attrs=shadowLastChange
+          by: self
+          type: write
+        - to: attrs=userPassword
+          by: self
+          type: write
+        - to: *
+          by: user
+          type: read
+        - to: attrs=userPassword
+          by: anonymous
+          type: auth
+        - to: *
+          by: anonymous
+          type: none
