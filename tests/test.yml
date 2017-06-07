@@ -5,6 +5,7 @@
     - apt:
         update_cache: yes
       when: "ansible_pkg_mgr == 'apt'"
+      changed_when: false
 
     - package:
         name: "{{ item }}"
@@ -12,7 +13,6 @@
       become: true
       with_items:
         - lsof
-        - openssl
 
 - hosts: all
   remote_user: root
