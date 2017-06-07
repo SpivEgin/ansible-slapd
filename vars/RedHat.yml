@@ -4,6 +4,7 @@ slapd_server_pkgs:
 
 slapd_utils_pkgs:
   - openldap-clients
+  - python-ldap
 
 slapd_ssl_utils_pkgs:
   - openssl
